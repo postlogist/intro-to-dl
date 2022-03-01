@@ -1,0 +1,84 @@
+[MUSIC] Hi, in this video, we will learn
+how to compute the gradients for MLP automatically. And for this, we need to remind you how a chain rule
+works, you should know that from calculus. We know how to compute derivatives for
+simple functions, like x squared, we have just two x. Or for exponent effects,
+it's just an exponent. Or for the logarithm, it's 1 over x. Let's take a composite function. That means that z1 is a function of x1 and
+x2, z2 is a function of x1 and x2, as well, and
+p is a function of z1 and z2. If we assume that z1, z2 and
+p are differentiable, then we can apply so-called chain rule,
+and we can find the derivative
+of p with respect to x1, dp dx1, which looks like that. So, it's dp dz1,
+dz1 dx1 + dp dz2, dz2 dx1. You can actually verify that
+this chain rule works for h(x) which is a product of functions f and
+g. And if you apply chain rule there, you can
+actually see that you got some rule that you might know from school which is a rule
+for finding derivative of a product. Now let's move to computational graphs. We already know that a composite function
+can be drawn as a computational graph. Where each node is a computed value and
+each edge corresponds to dependencies. Now, let's construct a similar graph,
+but a little bit different. Let's construct a new
+graph of derivatives. It will look exactly the same,
+with one distinction. All the edges will change their direction,
+and every edge will be
+assigned to a derivative. For example,
+if we have an edge coming from p to z1, that means that we will assign
+a value dp dz1 to that edge. And this graph actually will help us to
+apply chain rule, and you might guess why. Because if you look at the chain rule, it tries to compute the derivative
+p with respect to x1. And if you look at all the paths that
+it takes in this graph of derivatives, you can actually understand that a chain
+rule is just a sum of all those paths. So, let's verify that it
+actually works like that. Let's take a deeper example. Let's take an MLP where you
+have two hidden layers. So it is still a composite function. It is still differentiable, thanks
+to the choice of our errands,they're just a linear combination and
+differentiable activation. Let's see how we apply chain rule here. So we're trying to compute dp dx1. And to do that,
+we need to go through h1, right? And to computer dh1 dx1,
+we need to apply chain rule again because it is still a composite function,
+we need to go deeper. And if you apply a chain rule to
+those functions, you will go deeper. And if you substitute it back,
+you will get something like this. So you have four here that each of them
+is just a product of three derivatives. Let's check out the derivatives graph and let's verify that the chain rule
+actually has a visual explanation. So here we have our
+computational graph on top. We have the result that we got
+applying chain rule recursively, and here we got our graph in the bottom,
+which is a graph of derivatives. Let's verify that each sum in our
+derivative that we have computed actually corresponds to some
+path going from p to x1. Let's take the first one. And you can actually see that this
+is really a path from p to x1. If you go through all of them,
+you can actually verify that each of them corresponds to
+some unique path going from p to x1. And a chain rule is applied very easily. You just find that path and you multiply all the values assigned to
+those edges that are along that path. So the algorithm looks like this, if you want to calculate derivative of
+a node a with respect to other node b, all you need to do is do
+the following thing in loop. You find an unvisited path from a to b. You multiply all edge values in
+your derivative computational graph along this path and
+you add it to the resulting derivative. You can verify that in this simple case,
+as well as in more difficult case that we have
+reviewed previously, it actually works. And you can actually prove
+that it works in any case. Let's see how chain rule helps
+to train at least one neuron. So, let's take one neuron. It has input features x1 and x2. Then it has nodes alpha and beta, which
+are just parameters that we need to train. And what we do is we take
+linear combination of x1 and x2 with those weights. Then we calculate the sum. And then we apply a sigmoid activation
+function just to get the resulting z. So it's just one simple
+logistic regression. So how do we train it? Usually, we add some loss
+function to this graph which inputs not only our prediction node,
+z, but also a target value, y,
+which is a true answer for our task. So that loss function somehow tells us
+whether our prediction is good or not. And for SGD to work, we actually
+need to find the derivatives of that loss function with
+respect to alpha and beta. Let's see how the derivatives
+computational graph and chain rule helps us to do that. If you replace our graph with derivatives
+computational graph, that means that we actually reversed all the edges
+and assigned derivatives to those edges. And now we know how to
+find the derivative of any node with respect to any other node. So, let's try to find the derivative
+of L with respect to alpha. And to do that, we just need to find all the paths
+that go in this graph from L to alpha. And as a matter of fact,
+we have only one path and here it is. So we just multiply all the edge values
+that we have along this path, and this is our derivative. So, you can actually come up with
+a program that will do that for you, that will find all the paths and that
+will multiply that values along each path. And in the same manner,
+you can compute dL d beta, as well, and it is computed as easily. And of course, you should understand
+that you can do the same thing not for one neuron but actually for the whole MLP, because it doesn't change anything,
+you try to find new paths. So, let me summarize. We can use chain rule to compute
+derivatives of composite functions, which is MLP. We can use a computational graph of
+derivatives to compute them automatically because we have actually come up with an
+algorithm that finds all paths going from one node to the other and just multiplies
+all the derivatives along that path. In the next video,
+we will find out how to do these fast. [MUSIC]

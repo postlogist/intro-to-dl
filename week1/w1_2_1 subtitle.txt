@@ -1,0 +1,111 @@
+[MUSIC] Hi.
+In this video, we'll discuss linear models. One of the simplest models in machine
+learning, but linear models are building blocks for deep neural networks
+that we will discuss in our course. So, they are quite important for
+us and let's start with an example. Suppose you are given an image and the
+goal is to count sea lions on this image, this aerial world problem
+that was hosted on kegel.com. So we want to write a program, a function
+a that takes an image as an input, counts sea lions on it and counts
+the number of sea lions on the image. Of course, we can come up with some
+heuristics like detect edges of the objects on this photograph and
+try to count connected components. But this approach is inferior
+to machine learning. In machine learning, we try to
+collect a labelled set of images. So, we try to collect like 1,000 or maybe even 1 million of such
+photographs and label them. We count sea lions. We have a grand truth for every image and
+then we try to learn a function from data. We try to fund a function
+a that fits this data the best. Let's give some definitions that
+will be very useful for us. An image or any other object that we try to analyze
+in machine learning is called an example. And if it's an example that we try and
+model, it's a training example. We describe each example with deep
+characteristics that we call features. For example, for an images, features are
+intensities of every pixel on the image or something else. So, we have examples. And in supervised learning,
+we have target values. We have a grand truth and
+answer for each example. For example,
+in the problem of count in sea lions, we have a number of sea lions for
+every example, for every image. We denote this target values by y. So for example, xi. The target value is yi. As I said in machine learning, we tried
+to collect a set of label examples. We denoted by X large and
+it's a set of pairs of L pairs that have an example with its feature description,
+and target value. And finally, we want to find a modal, a function that maps
+examples to ta get values. We denoted by a(x) model or
+hypothesis and the goal of machine learning is to find a modal that fits
+the training set x by the best way. There are two main classes of
+supervised learning problems, regression and classification. In regression,
+the target value is a real value. For example, if we count sea lions,
+the target value is real. Actually, it's natural numbers. But it's also regression or, for
+example, if given a job description and we try to predict what salary
+will be given on this job. That's also regression since
+salary is a real value. Or for example, if we're given movie
+review from some user who tried to determine what rating will users give
+to this movie on a scale from one to five. It's also can be solved
+as a regression problem. On the other hand, if the number
+of target failures is finite, it's a classification task. For example, if we want to recognize
+some objects on images, for example, we want to find out whether there
+are cats or dogs or grass or maybe clouds or bicycle on the image. It's an object recognition task. Since number of answers is finite,
+there is finite number of objects, then we are solving classification task. Or for example,
+if we are analyzing news articles and want to find out what topic this article
+belongs to, is it about politics or sports or entertainment,
+then it's also classification tasks since number of target values is once again,
+finite. Let's discuss this very simple dataset. Each object, each example is
+described with one feature and you have real value target. Here is the dataset, so
+we can see that there is a linear trend. If feature increases two times, then target decreases
+somewhere about two times. So maybe we could use some linear
+model to describe this data, to build a predictive model. Here's linear model. It's very simple and
+has just two parameters, w1 and w0. And if you find best weights, w1 and w0,
+then we'll have a model like this one. It describes data very well. It isn't perfect. It doesn't predict the exact
+target value for each example, but it fits the data quite well. Of course, in most machine learning tasks,
+there are many features. So, we can use a generic
+linear model like this one. So it takes each feature, x,
+j multiplies it by weight wj. Sums these multiplicates of all the
+features and then adds a biased term, b. This is a linear model. It has d+1 parameters where d is
+the number of features in our dataset. There are d weights or
+coefficients and one bias term, b. It's a very simple model. Because for example, neural networks
+have much more parameters for the same number of features. And to make it even simpler,
+we'll suppose that in every sample, there is a fake feature that
+will always have a value of one. So, a coefficient with
+this feature is a bias. So in the following slides,
+we don't analyze a bias separately. We suppose it is among the weights. It would be very convenient to write
+our linear model in vector form. So, it's known from linear algebra that
+dot product is exactly what you've written on the previous slide. It's multiples of vectors and
+then we sum it up. So, our linear model is basically
+a dot product of weight vector and feature vector X. And if we want to apply our
+model to a whole training set or maybe to other set of examples,
+then we do the following thing. We form a matrix with our sample. Matrix is X large. It has L rows and d columns. Each row corresponds to one same,
+to one example and each column corresponds to values
+of one feature on every example. Then to apply our model
+to this set X large, we multiply matrix X by vector w and
+that's our predictions. This multiplication will give
+us the vector of size L and each component is a prediction of
+our linear model or each example. The next question in machine leaning
+is how to measure a quality or measure an error of a model on some set,
+or train, or maybe test set. One of the most popular choices for loss function in regression
+is mean squared error. It goes like this. We take a particular example,
+Xi, for example. We calculate a prediction of our model for
+this example for the linear model is that product of w and
+Xi, then we subtract target value. So we calculate deviation of target
+value from predictive value, then we take a square of it and then we average these squares of
+deviations over all our training set. This is mean squared error. It measures how well our
+model fits the data. The less mean squared error,
+the better the model fits the data. And of course, we can write mean
+squared error in vector form. We multiply matrix X by vector w and
+we have a vector of predictions for all the examples in the set,
+then we subtract vector of target values of real answers and then we take
+euclidean norm of this vector. That is the same as the mean
+squared error I described before. So we have a last function that measures
+how well our model fits the data, then all we have to do is to minimize it
+with respect to w, to our parameters. So, we want to find the parameters
+set w that gives us this most mean squared error on our train set. This is the essence of machine learning. We optimize loss to find the best model. Actually, if you do some calculus, if you
+take derivatives and solve the equations, then you'll have the analytical solution
+for these optimization problems. It goes like this, but
+it involves inverting and matrix. It is a very complicated operation. And if you have more than 100 or
+1,000 features, then it's very hard to find an inverse
+matrix exposed by extra supposed X. We can reduce this problem to solve it
+as a system of linear equations, but it's still quite hard and
+requires lots of computational resources. So later,
+we'll try to find a framework for better, more scalable
+optimization of such problems. In this video,
+we discussed linear models for regression. They are very simple, but they are very
+useful for deep neural networks. We discussed mean squared error,
+a loss function for regression problems. And found out that it has analytical
+solution, but it's not very good and it's hard to compute. So in following videos, we'll try to find
+a better way to optimize such models. But first of all in the next video, we'll discuss how to apply linear
+models in classification tasks. [MUSIC]

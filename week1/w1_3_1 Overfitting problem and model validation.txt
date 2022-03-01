@@ -1,0 +1,86 @@
+[NOISE] In this lesson,
+we'll discuss how to validate models, how to check whether they generalize, whether they work well not only on
+training set, but also on new data. And we'll start with the discussion
+of overfitting problem. So suppose that we have
+a classification problem. And we've just trained a classifier
+that has accuracy of 80%. So it gives correct answers
+on 80% of our training data. It looks good, but actually we don't have any guarantees that
+our model will work well on new data. Maybe it's overfitted,
+maybe it just remembered the answers for data from the training set and
+doesn't generalize at all. So let's consider two
+examples of overfitting. So suppose that we have a problem where
+each example is described by only one feature, and the data looks like that. The green line is a true target function,
+we want to estimate it. And suppose that we use
+a linear regression model. If we fit it, it looks like a blue line. So it's under fitted,
+it has inferior quality. So actually it's too simple for our data, because inter-dependency between y and
+x is not linear. To overcome this we can
+use polynomial model. So we add features to our examples. We use not only x, but also x squared,
+x to the 3rd degree, and x to the 4th degree. And if you fit this model, then we get
+a model blue line like on this picture. So it's a very good model,
+it fits the true target model perfectly. So here we have just as much parameters
+as we need, this is a nice model. But if we continue to increase
+number of features, for example up to x to the 15th degree,
+then we'll get this blue model. It's too complex for our data,
+it's overfitted, and maybe it has good performance
+on training examples, but it has very poor
+performance on new data points. Okay, here is another example. Suppose that we have eight
+data points: 0.2, 0.4 to 1.6, and the target value is calculated as
+sin(x) plus some small normal noise. And we use, once again, the polynomial
+model with eight parameters plus a bias. And if you fit this model,
+then we'll see a picture like this one. So our model goes through every training
+example, through every blue point. So it gives a perfect prediction for a
+training set, and we'll have, for example, zero loss on our training set. But this model is overfitted. If you take any data point
+not from our training set, then the quality would be very poor. And if you look at parameter vector,
+then they are very large. The range of target value is from 0 to 1,
+but the values of our parameters are hundreds. So this model just incorporates
+target values into parameters. So when you apply model with these
+parameters to training data points, then you get a correct answer. How can we validate our model and
+check whether it's overfitted or not? Well, we can take all
+our labeled examples and split them into two parts,
+training set and holdout set. We use training set to learn our model,
+like classifier or regression model, and we use holdout set to
+calculate the .equality. For example, accuracy or
+cross-entropy for classification, or maybe mean squared error for regression. And then, if the loss on holdout set is
+not very high, then the model is good. But if we see that loss
+increases on holdout set, then maybe the model is overfitted. And, of course, there is a question,
+how to split our data into two parts, whether training set should be large,
+or holdout set should be large. If the holdout set is small,
+then the training set is representative. It contains almost all data
+points from our label set. But the holdout set is too small, so the estimate of quality based on
+holdout set may have large variance. But if we select to have
+large holdout set and small training set, then the training
+set is not representative. It contains much lesser data points
+than we'll have in practice. So our estimate of
+quality would be biased. But since holdout set is large, then our estimates of quality
+will have low variance. In practice, we usually put 70%
+of our data as a training set, and 30% to holdout set. Or maybe 80% to training set,
+and 20% to holdout set. There are some problems with
+this approach with holdout set. For example, if the sample is small, we want to see what happens if
+each example is in training set. And what happens if this
+example is a holdout set. So to achieve this, for example we can
+split our data into training set and holdout set, K times. And then just average our
+estimates from all holdout set. But there are still no guarantees
+that every example will be both in training set and
+holdout set at some splits. Much better way to do
+it is cross-validation. In it we split our data into k blocks
+of approximately similar size, and we call these blocks folds. Then we take the first fold and use it as a holdout set, and
+all other blocks as training set. We train a model,
+we assess its quality, we validate it, we calculate the metric,
+on this first fold on our holdout set. Then we use second fold on our holdout set
+and repeat the same procedure, and etc. And we use, as the last step,
+the last fold as a holdout set, and all other folds as training set. And then we just take an average of
+our estimates from all iterations of this procedure. Cross-validation guarantees that each
+example will be both in holdout set and in training set at some
+iterations of this procedure. But cross-validation is
+quite hard to perform, because it requires to
+train our model K times. And if we are talking about
+deep neural networks, training of one network can take one or
+two or four weeks on several GPUs, so it will be quite hard to train
+them five times, or ten times. So in deep learning,
+we'll usually use just a holdout set. It's okay, because usually we'll work
+with a large samples where even one holdout set is representative. So there is no need to use
+multiple holdout sets. In this video we discussed that models
+can easily overfit if they have enough parameters for it. And discussed some ways to assess
+model quality to validate them, like holdout set or cross-validation. And in next video, we'll discuss how
+to modify our training procedure so that our models cannot overfit,
+how to reduce their complexity. [NOISE]

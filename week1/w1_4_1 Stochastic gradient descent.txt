@@ -1,0 +1,68 @@
+[MUSIC] In this lesson, we'll discuss extension of
+gradient descent methods that allow us to learn better and faster. So in gradient descent, we try to
+minimize a loss function which is usually a sum of loss functions on separate
+examples from our training set. In gradient descent,
+we start with initialization w0, and then on every step we take current
+approximation of parameter wt-1. Then we subtract the gradient at
+this point, multiply by e to t, the loading rate, and
+then we weigh the step. Then we check the stopping criteria. For example, we can check whether the new
+parameter vector is close to the previous. And if it's close,
+then we stop our gradient descent. For example, for a mean squared error,
+the loss function looks like sum of squared errors of separate
+examples from the training set. So to calculate the gradient
+of mean squared error, we should sum gradients of squared
+errors over all gradient examples. And if we have a million of gradient
+examples, then we have to sum over 1 million of gradients to calculate the
+gradient for one step of our algorithm. That's a lot.
+For example, to make 1,000 gradient steps, we have to calculate
+a billion of gradients. So this makes gradient descent
+infeasible for large scale problems. To overcome this problem we can
+use stochastic gradient descent. It's very similar to gradient
+descent with only one difference. We start with some initialization w0, and then on every step at a time t,
+we select some random example from our training set,
+the number of this example by i. And then we calculate the gradient
+only on this example. And then we make a step in
+the direction of this gradient. So in stochastic gradient descent
+we approximate the gradient of all the loss function by the gradient
+of loss function on only one example. Of course,
+this leads to very noisy approximations. If we analyze how the stochastic
+gradient descent behaves on some sample, then we can see this picture. So if you form iteration to iteration, the
+loss function can increase or decrease. But if you make enough iterations
+of gradient descent then it converges to sum minimum. So stochastic gradient descent
+makes very noisy updates. But it has a large advantage. It needs only one example
+to make one gradient step. And also it maybe used in online setting. Suppose that you have some stream of data,
+for example, a click stream from a search engine, and you want to adapt to
+the stream to learn a new module online. So if you use stochastic
+gradient descent when you receive another example from the click stream,
+you can just make one gradient step for this particular example, and
+that would be online learning. There is also a disadvantage of
+stochastic gradient descent. Learning rate nt should be chosen
+very carefully because if you choose a large learning rate,
+then the matrix cannot converge. And if you choose too small learning rate,
+then the conversions will be too small to require thousands and maybe millions
+of iterations to converge to the minimum. To overcome some of these problems, one
+can use mini-batch gradient descent, which merges some properties of the gradient
+descent and stochastic gradient descent. So in mini-batch gradient descent, on every iteration we choose m random
+examples from our training sample. You know their indices by i1, etc, im. Then we calculate the gradient for
+every of these examples. And than we average their gradients,
+and make a step towards this direction. So in mini-batch gradient descent,
+we use m points to estimate the full gradient instead of one point like
+a stochastic gradient descent. The updates of mini-batch gradient
+descent have much less noise than stochastic gradient descent. And this might still can be used
+in online learning setting. Just accumulate n examples from your
+stream, and then you make an update. And still, learning rate eta t
+should be chosen very carefully for mini-batch gradient descent. And also there is another problem with
+this stochastic and nonstochastic methods. Suppose that we have a difficult
+function that has levelized like this. They have elliptic form. It is known from the calculus
+that gradient is always orthogonal to the level line. So we start from some point w0, then we'll make a gradient step that takes
+us to the other side of this function. Then we take another gradient step that
+takes us in the opposite direction, etc. So the gradient distance will also rate on
+this function and this is not very good. It will take many iterations for it to converge, and it will be good
+to somehow overcome this problem. So in this video, we've discussed
+stochastic extensions of gradient descent, stochastic gradient descent, and
+mini-batch gradient descent. They're much faster than
+gradient descent and can be used in online learning setting. But they have some problems.
+They have learning rates that should be somehow chosen and they can have some
+problems with difficult functions. And in the next video, we will discuss
+some other extensions of stochastic methods that can overcome
+these difficulties. [MUSIC]

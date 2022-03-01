@@ -1,0 +1,96 @@
+[MUSIC] Hi, in this video we will find out how to
+apply a chain rule efficiently because modern neural networks have billions of
+parameters, so you need to do that fast. Let's look at our MLP
+with 3 hidden layers. And let's drill down to one
+actual parameter of MLP. Let's say that a hidden neuron h2
+is a linear combination of z1 and z2 with coefficients w1 and
+w2 and w0 of course. Let's try to find
+the derivative of our loss function with respect to parameter w1. The parameter of that hidden neuron. To do that we need to apply chain rule,
+right? So it is applied in the following way. We first need to calculate the derivative
+of our loss function with respect to our prediction. Then multiple it to dpdw1, and then to compute that we actually
+need apply chain rule again, and it is finally we have something like this,
+dlp, dpdh2 and dh2dw1. And you can see that to
+get to that parameter w1, you will have to go through h2 anyway. So let's make our task
+a little bit more simple, let's say that we want to find easily and
+efficiently all the derivatives in the following form,
+dp, d, any other node. So we want to find
+derivatives of our prediction node with respect to any other node. Because we will need it anyway
+to make that final step, and to drill to that parameters of. But let's now put that away, so that the explanation becomes
+a little bit more simpler. So let's look at this slide, and let's notice that we need to
+find all these derivatives. We need to find dpdx1,
+dpdx2, dpdh1, all of them, so that we can make our
+step with gradient descent. And here I have already applied
+the chain rule that we have learned in the previous video. And now I want you to notice one thing. I want you to notice that here
+we have a color coding, and you can actually see that we can reuse
+a lot of previous computation here. And we will start from the deepest layer,
+let's start with dpdh1 and dpdh2. You will have to compute them anyway, but you can also see that these
+derivatives will be used everywhere. So if you want to compute for example dp dz1 you will need
+that derivatives as well. So we can store them somewhere,
+and we use previous computations. So, let's for example compute dpdx1. For that, applying our chain
+rule we just need to find all the paths that go from p to z1,
+and sum them up. You can actually see that dpdh1 and
+dpdh2 are reused. This is okay. Let's try to move a little bit deeper. So let's go to the first hidden layer, and let's try to compute dp/dx1,
+and actually a part of it. You can see that to go to x1,
+we'll have to go through z1 anyway. So you can actually see that if you
+move dz1/dx1 out of the brackets, then what is left is exactly
+the derivative that we already computed. So we already know what
+the value of dp/dz1 we have. So we can substitute it there,
+and so we omit a lot of unnecessary computations because
+we will use previous ones. And actually we can do that twice because there is one more not to which
+you can go through z1, it's x2. And you can do just exactly the same
+thing, so we can see that we can apply chain rule in such a manner that you'll
+go through a node which is in red here. And when you go through it,
+the chain rule looks like this. So dp, dz1, dz1, dx2. And that's it, that's how you can do that,
+and that's how we can do that efficiently. And actually, this procedure is called
+reverse mode differentiation, and in case of neural networks,
+it has one name. It's called back propagation. It works fast because we reuse
+computations from previous tabs and in fact, if you look at it closer,
+we use each edge only once, and we compete its value only
+once when we go along it. And we go along it only once, and
+then we just reuse that value. Let's look in details how back
+propagation actually works. Back propagation has two passes. The first one, is a forward pass and
+the second one is a backward pass. The first one is made in our
+original competition graph and the second one is made
+in graph of derivatives. Why do we need a forward pass? Why do we need that? The problem is that when
+you make a step with SGD, you actually not only need
+to compute the derivative, you also need to take that derivative
+in a certain point, right? So that you move from that point in
+the direction of that derivative. And to do that, you need to know at
+which points to take that derivative. And that is exactly why
+we need forward pass. Let's take for example, d-sigma ds
+that we compute in our backward pass. We need to apply it in a certain point,
+in a point s. And to get that, we need a forward pass. We just take those values,
+and we compute it easily. So, let me show you how you
+can implement a sigmoid activation node in your
+neural network framework. Let's assume that it's not there,
+and we need to add it there. So what interfaces we will
+have to implement, so that that propagation actually works? And the first thing to
+face is a forward pass. You need to tell how your
+U-node takes an input and produces an output, so how it transforms
+the value during a forward pass. And in our case it's pretty easy, right? So the interface is pretty simple as well. We just take all of our inputs and we apply sigmoid activation
+function with NumPy. So a forward pass is easy,
+take an input, produce an output. But a backward pass,
+is a little bit more intimidating. Let's look at it. A backward pass is made on
+graph of derivatives, right? And the thing is when we
+travel along these paths, we actually want one more thing. We want to compute the derivative. And for
+that we need to multiply them, right? So people have come up with an interface
+that does that efficiently. Let's say that when we
+go through this graph, we have our accumulated dl d
+sigma when we go in that node. And how do we get that? We actually found a path from loss
+function to our sigmoid output, and we multiplied all
+the values along that path. So we have it, and now we need to transform it when we go
+through these transformation in backwards. And what we need to do,
+is we need to take that dl d sigma. We also need to take that s,
+that s value because we need to calculate the derivative in exactly that point,
+that is why we need forward pass. And we need to output dl ds, so
+we need to tell how our derivative changes when we go through this sigmoid
+node in the opposite direction. That's why the backward pass interface
+looks like, it not only takes the input at which we will take our derivative, but
+it also takes an incoming gradient. So that, inside we can multiply
+the gradient of our sigmoid function with respect to its input in that
+input and multiply that by dl d sigma. So that the chain wheel works
+automatically and if you apply this backward pass along the path,
+the product will accumulate automatically. So this is pretty cool. Let me summarize. Back propagation is a fancy name for
+an automatic reverse-mode differentiation. And back-propagation is pretty fast. In fact, this is the way how
+neural nets are trained today. In the next video, we will take
+a look at MLP implementation details. [SOUND]
